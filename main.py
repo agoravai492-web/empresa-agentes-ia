@@ -1,7 +1,8 @@
 """
-EMPRESA AGENTES IA - VERSAO ULTRA SIMPLES E RAPIDA
-Funciona sozinho no GitHub - Sem Make, Sem Metricool, Sem Token
-Gera 2 videos por dia - 8h saude, 18h cozinha
+ROBÔ EMPRESA AGENTES IA - 100% FOCADO NO MASSAGEADOR MÃOZINHA
+Produto: Massageador de Pescoço Portátil Multiuso
+Link: https://s.shopee.com.br/4B0vgUxTVN
+Vendas automáticas GitHub 8h e 18h - SIMPLES E RÁPIDO
 """
 
 import os
@@ -9,91 +10,192 @@ import random
 from datetime import datetime
 import pytz
 
-# SEUS LINKS DA SHOPEE - TROCA AQUI
-LINK_SAUDE = "https://s.shopee.com.br/SEU-LINK-SAUDE-AQUI"
-LINK_COZINHA = "https://s.shopee.com.br/SEU-LINK-COZINHA-AQUI"
+# SEU LINK OFICIAL DO PRODUTO
+LINK_OFICIAL = "https://s.shopee.com.br/4B0vgUxTVN"
 
-PRODUTOS = {
-    "saude": [
-        {"nome": "Kit Seca Barriga Detox", "gancho": "barriga inchada sumiu em 7 dias", "dor": "inchaço e cansaço"},
-        {"nome": "Colágeno Verisol 3 em 1", "gancho": "pele esticou e ruga sumiu", "dor": "pele flácida"},
-        {"nome": "Massageador Elétrico", "gancho": "dor nas costas sumiu em 10 min", "dor": "dores nas costas"},
-        {"nome": "Cinta Modeladora", "gancho": "perdi 2 números em 15 dias", "dor": "gordura localizada"},
-    ],
-    "cozinha": [
-        {"nome": "Triturador Manual 12 em 1", "gancho": "pico cebola em 5 seg sem chorar", "dor": "perder horas na cozinha"},
-        {"nome": "Air Fryer 4.2L", "gancho": "frito batata sem óleo crocante", "dor": "cozinha cheia de óleo"},
-        {"nome": "Jogo de Facas 6 peças", "gancho": "corta carne como manteiga", "dor": "facas cegas"},
-        {"nome": "Tapete Mágico Cozinha", "gancho": "minha cozinha nunca mais sujou", "dor": "sujeira na cozinha"},
-    ]
-}
+# GANCHOS VIRAIS TESTADOS PRA ESSE PRODUTO
+GANCHOS = [
+    "Eu trabalhava 8h no PC com dor no pescoço ATÉ comprar isso!",
+    "Minha esposa brigava pq eu vivia reclamando de dor nas costas!",
+    "Gastei R$300 em massagem, e isso aqui custou R$49 e faz igual!",
+    "POV: Você chega do trabalho destruído e isso te salva em 10 min",
+    "Meu chefe me deu advertência pq eu não aguentava mais trabalhar com dor",
+    "Minha mãe tem 60 anos e chorava de dor na lombar, olha o que fiz",
+    "Pare de tomar remédio pra dor! Isso aqui resolve na hora!",
+    "Meu marido é motorista e vive com dor, comprei isso e ele chorou",
+    "Você ainda paga massagista? Eu pago R$49 uma vez só!",
+    "Fisioterapeuta me cobrou R$150 a sessão, comprei isso por R$49"
+]
 
-def gerar():
+BENEFICIOS = [
+    "Alívio em 10 minutos no pescoço, lombar e pernas",
+    "Com aquecimento que relaxa na hora",
+    "Usa em casa, no carro e no escritório",
+    "Mãozinha que massageia igual massagista profissional",
+    "Portátil e recarregável via USB",
+    "Acaba com dor de ficar no celular e PC o dia todo"
+]
+
+DORES = [
+    "dor no pescoço de ficar no celular",
+    "dor nas costas de trabalhar sentado",
+    "lombar travada todo dia",
+    "pernas doloridas",
+    "tensão e estresse acumulado",
+    "noites sem dormir por causa da dor"
+]
+
+def gerar_conteudo():
     tz = pytz.timezone('America/Sao_Paulo')
     agora = datetime.now(tz)
     
-    # Manha = saude, Noite = cozinha
-    periodo = "saude" if agora.hour < 15 else "cozinha"
-    produto = random.choice(PRODUTOS[periodo])
-    link = LINK_SAUDE if periodo == "saude" else LINK_COZINHA
+    gancho = random.choice(GANCHOS)
+    beneficio = random.choice(BENEFICIOS)
+    dor = random.choice(DORES)
     
-    # ROTEIRO VIRAL PRONTO PRA GRAVAR
-    roteiro = f"""ROTEIRO - {produto['nome']}:
+    # ROTEIROS VIRAIS TIKTOK - 30 SEGUNDOS
+    roteiro = f"""ROTEIRO TIKTOK - MASSAGEADOR MÃOZINHA
 
-[0-3s] GANCHO: "Você sofre com {produto['dor']}? Eu sofria ATÉ ontem!"
+[0-3s] GANCHO (grita na câmera):
+"{gancho}"
 
-[3-10s] DOR: "Eu tentava de tudo e nada funcionava, até que..."
+[3-8s] DOR (mostra você com dor):
+"Eu sofria com {dor} TODO DIA! Não aguentava mais!"
 
-[10-20s] SOLUÇÃO: "Descobri o {produto['nome']} na Shopee! Olha isso: {produto['gancho']}!"
+[8-18s] SOLUÇÃO (mostra o produto nas fotos que você tem):
+"Comprei esse Massageador Mãozinha na Shopee! Olha isso! 
+Ele tem essa mãozinha que massageia IGUAL massagista!
+E tem aquecimento que relaxa na HORA!
+Uso no pescoço, nas costas, nas pernas!"
 
-[20-25s] PROVA: "Paguei só R$39 na promoção! Tá com 50% OFF!"
+[18-25s] PROVA:
+"Paguei só R$49 na promoção! Antes era R$149!
+Minha família toda já pegou o meu emprestado!"
 
-[25-30s] CTA: "Link com desconto tá na bio! Corre que acaba HOJE!"
+[25-30s] CTA (aponta pra baixo):
+"Link com DESCONTO tá na bio! Corre que o estoque acaba HOJE!
+Comenta EU QUERO que te mando o link!"
 """
 
-    legenda = f"""Você ainda sofre com {produto['dor']}? 😱 Eu também sofria!
+    # LEGENDA TIKTOK PRONTA - COPIAR E COLAR
+    legenda_tiktok = f"""{gancho} 😱
 
-Até descobrir o {produto['nome']} na Shopee! 😍
+Eu sofria com {dor} todo dia até descobrir isso! 👇
 
-👉 {produto['gancho'].upper()}!
+Esse é o Massageador Mãozinha que viralizou! 💚
 
-Eu paguei só R$39, tá com 50% OFF hoje! 🔥
+✅ {beneficio}
+✅ Multiuso: Pescoço, Lombar, Pernas
+✅ Casa, carro e escritório
+✅ Com aquecimento relaxante
+✅ Portátil e recarregável
 
-LINK COM DESCONTO NA BIO: {link}
+Paguei R$49 na Shopee (era R$149) 🔥
 
-#shopee #achadinhos #shopeeafiliado #viral #dica #oferta #shopeebrasil #{periodo} #promocao
+👉 LINK COM DESCONTO: {LINK_OFICIAL}
+Tá na minha bio também!
+
+#massageador #massagem #dornopescoço #dorcostas #aliviodor #shopee #achadinhosshopee #shopeeafiliado #viral #dica #saude #bemestar #massageadorportatil
 """
 
-    return periodo, produto, roteiro, legenda, agora
+    # LEGENDA INSTAGRAM REELS
+    legenda_reels = f"""SEU BEM-ESTAR ONDE FOR! ✨
+
+Relaxe a qualquer hora, em qualquer lugar!
+
+Esse Massageador Mãozinha salvou minha coluna! 🙏
+
+{beneficio} em 10 minutos!
+
+🌿 Adaptável para casa, carro e escritório
+💚 Multiuso: Pescoço, Lombar, Pernas
+
+LINK NA BIO COM DESCONTO! 👇
+{LINK_OFICIAL}
+
+#bemestar #saude #massagem #relaxamento #shopeefinds
+"""
+
+    # COPY PÁGINA DE VENDAS
+    copy_pagina = f"""
+=== COPY PÁGINA DE VENDAS - MASSAGEADOR MÃOZINHA ===
+
+TÍTULO: Diga ADEUS às Dores no Pescoço e Costas em Apenas 10 Minutos Por Dia!
+
+SUBTÍTULO: O Massageador Portátil que Fisioterapeutas Estão Recomendando - Use em Casa, Carro e Escritório
+
+DORES:
+❌ Você chega em casa destruído com dor no pescoço de ficar no celular?
+❌ Trabalha 8h sentado e sua lombar trava?
+❌ Gasta R$150 por sessão de massagem e a dor sempre volta?
+❌ Toma remédio todo dia e não resolve?
+
+SOLUÇÃO:
+Apresentamos o Massageador Mãozinha - O Único com Tecnologia de Mão Humana!
+
+BENEFÍCIOS:
+✅ Alívio imediato em 10 minutos
+✅ Mãozinha em silicone que imita massagista profissional
+✅ Função aquecimento que relaxa músculos tensos
+✅ Multiuso: Pescoço, Ombros, Lombar, Pernas e Pés
+✅ Portátil: Leve para escritório, carro, viagem
+✅ Recarregável USB - dura 3h
+✅ Silencioso - use até no trabalho
+
+PARA QUEM É:
+- Quem trabalha no computador/celular
+- Motoristas, escritório, donas de casa
+- Quem tem fibromialgia, tensão, estresse
+- Idosos com dores crônicas
+
+OFERTA:
+DE R$149,90 POR APENAS R$49,90 HOJE!
++ Frete Grátis + Garantia 30 dias
+
+CTA: QUERO MEU MASSAGEADOR COM DESCONTO
+Link: {LINK_OFICIAL}
+
+PROVA SOCIAL:
+⭐⭐⭐⭐⭐ 4.9/5 (2.347 avaliações)
+"Minha dor de 10 anos sumiu em 3 dias!" - Maria S.
+"Meu marido parou de reclamar de dor!" - Joana L.
+
+GARANTIA: 30 dias ou seu dinheiro de volta!
+"""
+
+    return {
+        "gancho": gancho,
+        "roteiro": roteiro,
+        "legenda_tiktok": legenda_tiktok,
+        "legenda_reels": legenda_reels,
+        "copy_pagina": copy_pagina,
+        "data": agora
+    }
 
 if __name__ == "__main__":
-    print("=== GERANDO CONTEUDO ULTRA SIMPLES ===")
+    print("=== GERANDO CONTEUDO MASSAGEADOR MÃOZINHA ===")
+    conteudo = gerar_conteudo()
     
-    periodo, produto, roteiro, legenda, agora = gerar()
+    os.makedirs("videos_prontos_massageador", exist_ok=True)
+    data_str = conteudo['data'].strftime("%Y-%m-%d_%Hh%M")
     
-    # Cria pasta
-    os.makedirs("videos_prontos", exist_ok=True)
-    os.makedirs(f"videos_prontos/{agora.strftime('%Y-%m-%d')}", exist_ok=True)
+    # Salva todos os arquivos
+    with open(f"videos_prontos_massageador/{data_str}_ROTEIRO_TIKTOK.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['roteiro'])
     
-    nome_arquivo = f"{agora.strftime('%Y-%m-%d_%Hh%M')}_{periodo}_{produto['nome'].replace(' ', '_')}"
+    with open(f"videos_prontos_massageador/{data_str}_LEGENDA_TIKTOK.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['legenda_tiktok'])
     
-    # Salva 3 arquivos prontos
-    with open(f"videos_prontos/{agora.strftime('%Y-%m-%d')}/{nome_arquivo}_ROTEIRO.txt", "w", encoding="utf-8") as f:
-        f.write(roteiro)
+    with open(f"videos_prontos_massageador/{data_str}_LEGENDA_REELS.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['legenda_reels'])
     
-    with open(f"videos_prontos/{agora.strftime('%Y-%m-%d')}/{nome_arquivo}_LEGENDA.txt", "w", encoding="utf-8") as f:
-        f.write(legenda)
+    with open(f"videos_prontos_massageador/{data_str}_PAGINA_VENDAS.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['copy_pagina'])
     
-    with open(f"videos_prontos/{agora.strftime('%Y-%m-%d')}/{nome_arquivo}_COMPLETO.txt", "w", encoding="utf-8") as f:
-        f.write(f"{roteiro}\n\n{'='*50}\n\n{legenda}")
+    with open("ULTIMO_VIDEO_MASSAGEADOR.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['roteiro'] + "\n\n" + "="*70 + "\n\n" + conteudo['legenda_tiktok'] + "\n\n" + "="*70 + "\n\n" + conteudo['copy_pagina'])
     
-    # Salva o mais recente na raiz pra facilitar
-    with open("ULTIMO_VIDEO_PRONTO.txt", "w", encoding="utf-8") as f:
-        f.write(f"DATA: {agora.strftime('%d/%m/%Y %H:%M')} - {periodo.upper()}\n")
-        f.write(f"PRODUTO: {produto['nome']}\n\n")
-        f.write(roteiro + "\n\n" + "="*50 + "\n\n" + legenda)
-    
-    print(f"✅ VIDEO GERADO: {produto['nome']} - {periodo}")
-    print(f"📁 Pasta: videos_prontos/{agora.strftime('%Y-%m-%d')}/")
-    print("🎯 Pronto pra copiar e colar no TikTok!")
-    print("=== FIM ===")
+    print(f"✅ Gancho: {conteudo['gancho']}")
+    print(f"✅ Arquivos salvos em videos_prontos_massageador/")
+    print(f"✅ Link: {LINK_OFICIAL}")
+    print("=== PRONTO PRA VENDER ===")
