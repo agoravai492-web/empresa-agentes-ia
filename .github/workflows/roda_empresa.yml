@@ -1,0 +1,17 @@
+name: Roda Empresa IA
+on:
+  schedule:
+    - cron: '0 11:00 * * *'
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install -r requirements.txt
+      - run: python main.py
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
