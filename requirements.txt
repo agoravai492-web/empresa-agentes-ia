@@ -1,6 +1,2 @@
-crewai[litellm]
-crewai-tools
-langchain-groq
-python-dotenv
 groq
-litellm
+python-dotenv
