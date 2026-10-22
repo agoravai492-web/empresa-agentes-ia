@@ -1,88 +1,99 @@
 """
-IA Local - EMPRESA AGENTES IA - VERSAO 100% AUTOMATICA FINAL
-GitHub Actions (8h e 18h) -> Make.com Webhook -> Metricool -> TikTok AUTO-POST
-Webhook: https://hook.eu1.make.com/nnri2pex2sl3kg4svmkmwy8iicaleqoc
+EMPRESA AGENTES IA - VERSAO ULTRA SIMPLES E RAPIDA
+Funciona sozinho no GitHub - Sem Make, Sem Metricool, Sem Token
+Gera 2 videos por dia - 8h saude, 18h cozinha
 """
 
 import os
 import random
-import requests
 from datetime import datetime
 import pytz
 
-# --- SEU WEBHOOK JA CONFIGURADO ---
-MAKE_WEBHOOK_URL = os.getenv("MAKE_WEBHOOK_URL", "https://hook.eu1.make.com/nnri2pex2sl3kg4svmkmwy8iicaleqoc")
-LINK_SHOPEE_SAUDE = os.getenv("LINK_SHOPEE_SAUDE", "https://s.shopee.com.br/SEU-LINK-SAUDE")
-LINK_SHOPEE_COZINHA = os.getenv("LINK_SHOPEE_COZINHA", "https://s.shopee.com.br/SEU-LINK-COZINHA")
+# SEUS LINKS DA SHOPEE - TROCA AQUI
+LINK_SAUDE = "https://s.shopee.com.br/SEU-LINK-SAUDE-AQUI"
+LINK_COZINHA = "https://s.shopee.com.br/SEU-LINK-COZINHA-AQUI"
 
 PRODUTOS = {
     "saude": [
-        {"nome": "Kit Seca Barriga Detox Natural", "beneficio": "perder 5kg em 30 dias sem dieta maluca", "dor": "barriga inchada e autoestima baixa"},
-        {"nome": "Colágeno Verisol 3 em 1", "beneficio": "pele firme, sem rugas e cabelo forte", "dor": "pele flácida e envelhecida"},
-        {"nome": "Massageador Elétrico Portátil", "beneficio": "alívio imediato de dor nas costas em 10 min", "dor": "dores nas costas e pescoço todo dia"},
+        {"nome": "Kit Seca Barriga Detox", "gancho": "barriga inchada sumiu em 7 dias", "dor": "inchaço e cansaço"},
+        {"nome": "Colágeno Verisol 3 em 1", "gancho": "pele esticou e ruga sumiu", "dor": "pele flácida"},
+        {"nome": "Massageador Elétrico", "gancho": "dor nas costas sumiu em 10 min", "dor": "dores nas costas"},
+        {"nome": "Cinta Modeladora", "gancho": "perdi 2 números em 15 dias", "dor": "gordura localizada"},
     ],
     "cozinha": [
-        {"nome": "Triturador Manual 12 em 1", "beneficio": "cortar cebola, tomate e tudo em 5 segundos sem chorar", "dor": "perder horas na cozinha picando tudo"},
-        {"nome": "Air Fryer Digital 4.2L", "beneficio": "fritar batata e frango sem óleo, crocante e saudável", "dor": "cozinha cheia de óleo, gordura e sujeira"},
+        {"nome": "Triturador Manual 12 em 1", "gancho": "pico cebola em 5 seg sem chorar", "dor": "perder horas na cozinha"},
+        {"nome": "Air Fryer 4.2L", "gancho": "frito batata sem óleo crocante", "dor": "cozinha cheia de óleo"},
+        {"nome": "Jogo de Facas 6 peças", "gancho": "corta carne como manteiga", "dor": "facas cegas"},
+        {"nome": "Tapete Mágico Cozinha", "gancho": "minha cozinha nunca mais sujou", "dor": "sujeira na cozinha"},
     ]
 }
 
-def gerar_conteudo():
-    tz_br = pytz.timezone('America/Sao_Paulo')
-    agora = datetime.now(tz_br)
-    periodo = "saude" if 5 <= agora.hour <= 14 else "cozinha"
+def gerar():
+    tz = pytz.timezone('America/Sao_Paulo')
+    agora = datetime.now(tz)
+    
+    # Manha = saude, Noite = cozinha
+    periodo = "saude" if agora.hour < 15 else "cozinha"
     produto = random.choice(PRODUTOS[periodo])
-    link = LINK_SHOPEE_SAUDE if periodo == "saude" else LINK_SHOPEE_COZINHA
+    link = LINK_SAUDE if periodo == "saude" else LINK_COZINHA
+    
+    # ROTEIRO VIRAL PRONTO PRA GRAVAR
+    roteiro = f"""ROTEIRO - {produto['nome']}:
 
-    # Roteiro viral TikTok
-    roteiro = f"Você ainda sofre com {produto['dor']}? Eu também sofria! Até que comprei o {produto['nome']} na Shopee. Gente, em 7 dias eu já consegui {produto['beneficio']}. Paguei R$39 na promoção, link na bio!"
+[0-3s] GANCHO: "Você sofre com {produto['dor']}? Eu sofria ATÉ ontem!"
 
-    legenda = f"""{roteiro}
+[3-10s] DOR: "Eu tentava de tudo e nada funcionava, até que..."
 
-👉 LINK COM DESCONTO SHOPEE NA BIO: {link}
+[10-20s] SOLUÇÃO: "Descobri o {produto['nome']} na Shopee! Olha isso: {produto['gancho']}!"
 
-#achadinhosshopee #shopeeafiliado #shopee #dicas #viral #saude #cozinha #oferta #shopeebrasil #{periodo}
+[20-25s] PROVA: "Paguei só R$39 na promoção! Tá com 50% OFF!"
+
+[25-30s] CTA: "Link com desconto tá na bio! Corre que acaba HOJE!"
 """
 
-    return {
-        "periodo": periodo,
-        "produto": produto['nome'],
-        "roteiro": roteiro,
-        "legenda": legenda,
-        "link": link,
-        "data": agora.strftime("%d/%m/%Y %H:%M"),
-        "plataforma": "tiktok"
-    }
+    legenda = f"""Você ainda sofre com {produto['dor']}? 😱 Eu também sofria!
 
-def enviar_para_make(dados):
-    try:
-        print(f"🚀 Enviando para Make.com: {MAKE_WEBHOOK_URL}")
-        r = requests.post(MAKE_WEBHOOK_URL, json=dados, timeout=30)
-        print(f"Make status: {r.status_code}")
-        print(f"Make resposta: {r.text[:500]}")
-        if r.status_code in [200, 201, 202]:
-            print("✅ SUCESSO! Make recebeu! Agora vai pro Metricool -> TikTok sozinho!")
-            return True
-        else:
-            print("⚠️ Make não respondeu 200, mas dados foram enviados. Verifique no Make se aparece 'Successfully determined'")
-            return True
-    except Exception as e:
-        print(f"❌ Erro ao enviar para Make: {e}")
-        return False
+Até descobrir o {produto['nome']} na Shopee! 😍
+
+👉 {produto['gancho'].upper()}!
+
+Eu paguei só R$39, tá com 50% OFF hoje! 🔥
+
+LINK COM DESCONTO NA BIO: {link}
+
+#shopee #achadinhos #shopeeafiliado #viral #dica #oferta #shopeebrasil #{periodo} #promocao
+"""
+
+    return periodo, produto, roteiro, legenda, agora
 
 if __name__ == "__main__":
-    print("=== FABRICA IA LOCAL - INICIANDO ===")
-    conteudo = gerar_conteudo()
-    print(f"Produto: {conteudo['produto']}")
-    print(f"Legenda: {conteudo['legenda'][:150]}...")
+    print("=== GERANDO CONTEUDO ULTRA SIMPLES ===")
     
-    sucesso = enviar_para_make(conteudo)
+    periodo, produto, roteiro, legenda, agora = gerar()
     
-    # Salva backup local (para GitHub Artifacts)
-    with open("resultado_empresa.txt", "w", encoding="utf-8") as f:
-        f.write(conteudo['legenda'] + f"\n\nMake: {'ENVIADO' if sucesso else 'ERRO'}")
+    # Cria pasta
+    os.makedirs("videos_prontos", exist_ok=True)
+    os.makedirs(f"videos_prontos/{agora.strftime('%Y-%m-%d')}", exist_ok=True)
     
-    with open(f"video_{conteudo['periodo']}_{datetime.now().strftime('%Y-%m-%d_%Hh%M')}.txt", "w", encoding="utf-8") as f:
-        f.write(conteudo['legenda'])
+    nome_arquivo = f"{agora.strftime('%Y-%m-%d_%Hh%M')}_{periodo}_{produto['nome'].replace(' ', '_')}"
     
-    print(f"=== FIM - {'AUTOMATICO OK' if sucesso else 'SALVO LOCAL'} ===")
+    # Salva 3 arquivos prontos
+    with open(f"videos_prontos/{agora.strftime('%Y-%m-%d')}/{nome_arquivo}_ROTEIRO.txt", "w", encoding="utf-8") as f:
+        f.write(roteiro)
+    
+    with open(f"videos_prontos/{agora.strftime('%Y-%m-%d')}/{nome_arquivo}_LEGENDA.txt", "w", encoding="utf-8") as f:
+        f.write(legenda)
+    
+    with open(f"videos_prontos/{agora.strftime('%Y-%m-%d')}/{nome_arquivo}_COMPLETO.txt", "w", encoding="utf-8") as f:
+        f.write(f"{roteiro}\n\n{'='*50}\n\n{legenda}")
+    
+    # Salva o mais recente na raiz pra facilitar
+    with open("ULTIMO_VIDEO_PRONTO.txt", "w", encoding="utf-8") as f:
+        f.write(f"DATA: {agora.strftime('%d/%m/%Y %H:%M')} - {periodo.upper()}\n")
+        f.write(f"PRODUTO: {produto['nome']}\n\n")
+        f.write(roteiro + "\n\n" + "="*50 + "\n\n" + legenda)
+    
+    print(f"✅ VIDEO GERADO: {produto['nome']} - {periodo}")
+    print(f"📁 Pasta: videos_prontos/{agora.strftime('%Y-%m-%d')}/")
+    print("🎯 Pronto pra copiar e colar no TikTok!")
+    print("=== FIM ===")
