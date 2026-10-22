@@ -1,78 +1,30 @@
 import os
 from crewai import Agent, Task, Crew, Process
 from langchain_groq import ChatGroq
-from dotenv import load_dotenv
-
-load_dotenv()
 
 groq_key = os.getenv("GROQ_API_KEY")
 if not groq_key:
-    raise ValueError("GROQ_API_KEY nao encontrada! Configure em Settings > Secrets > Actions")
+    print("ERRO: GROQ_API_KEY nao encontrada nos Secrets")
+    exit(1)
 
-llm = ChatGroq(
-    model="llama-3.1-8b-instant",
-    api_key=groq_key,
-    temperature=0.7
-)
+llm = ChatGroq(model="llama3-70b-8192", api_key=groq_key, temperature=0.7)
 
-print("=== EMPRESA DE AGENTES IA INICIADA ===")
+# Agentes
+namer = Agent(role="Criador de Nome", goal="Criar nome de empresa impactante", backstory="Voce e especialista em naming", llm=llm, verbose=True)
+promesser = Agent(role="Criador de Promessa", goal="Criar promessa irresistivel", backstory="Especialista em copywriting", llm=llm, verbose=True)
+adman = Agent(role="Criador de Anuncios", goal="Criar 3 anuncios", backstory="Especialista em ads", llm=llm, verbose=True)
 
-marketing = Agent(
-  role='Diretor de Marketing',
-  goal='Criar nome, promessa, logo, cores e 3 anuncios (AD01, AD02, AD03)',
-  backstory='Especialista em infoprodutos. Transforma publico/nicho em nome e promessa irresistivel.',
-  verbose=True,
-  llm=llm,
-  allow_delegation=False
-)
+# Tasks
+t1 = Task(description="Crie um nome criativo e memoravel para uma empresa de agentes de IA que vende automacao para negocios locais em Sao Carlos. Retorne so o nome e o porque.", expected_output="Nome e justificativa", agent=namer)
+t2 = Task(description="Crie uma promessa irresistivel para essa empresa de IA. Foque em resultado para negocios locais.", expected_output="Promessa de valor", agent=promesser)
+t3 = Task(description="Crie 3 anuncios curtos para Instagram para vender essa empresa de IA. Formato: Gancho + Corpo + CTA", expected_output="3 anuncios", agent=adman)
 
-vendas = Agent(
-  role='Diretor de Vendas e Recuperacao',
-  goal='Criar fluxo de pagina de vendas + checkout Hotmart + recuperacao',
-  backstory='Cuida da pagina de vendas e recuperacao de boleto/pix cancelado com email e WhatsApp.',
-  verbose=True,
-  llm=llm,
-  allow_delegation=False
-)
+crew = Crew(agents=[namer, promesser, adman], tasks=[t1, t2, t3], process=Process.sequential, verbose=True)
+result = crew.kickoff()
 
-ti = Agent(
-  role='TI e Automacao',
-  goal='Documentar como manter a empresa rodando no GitHub Actions',
-  backstory='Garante que logs e automacoes funcionem.',
-  verbose=True,
-  llm=llm,
-  allow_delegation=False
-)
+print("\n\n===== RESULTADO FINAL =====\n")
+print(result)
 
-task1 = Task(
-  description='Para o nicho de RENDA EXTRA PARA MAES, crie NOME E PROMESSA de infoproduto, defina LOGO e CORES (hex), e crie 3 copies de anuncios AD01 AD02 AD03 para testar com R$90/dia.',
-  expected_output='Nome, promessa, paleta de cores hex e 3 copies de anuncio completos.',
-  agent=marketing
-)
-
-task2 = Task(
-  description='Com base nos anuncios, descreva fluxo: PUBLICO/NICHO -> ANUNCIOS R$90/dia -> PAG VENDA -> CHECKOUT Hotmart. Quando APROVADO: entrega. Quando CANCELADO/BOLETO/PIX: 2 e-mails de recuperacao + 1 mensagem WhatsApp oferecendo parcelamento.',
-  expected_output='Fluxo completo e textos de recuperacao prontos para usar.',
-  agent=vendas
-)
-
-task3 = Task(
-  description='Crie checklist simples de TI: como ver resultado, onde fica o arquivo resultado_empresa.txt, e como a automacao roda todo dia 8h.',
-  expected_output='Checklist pratico de 5 passos.',
-  agent=ti
-)
-
-crew = Crew(
-  agents=[marketing, vendas, ti],
-  tasks=[task1, task2, task3],
-  process=Process.sequential,
-  verbose=True
-)
-
-if __name__ == "__main__":
-    result = crew.kickoff()
-    print("\n=== RESULTADO FINAL ===")
-    print(result)
-    with open("resultado_empresa.txt", "w", encoding="utf-8") as f:
-        f.write(str(result))
-    print("\nArquivo resultado_empresa.txt salvo!")
+with open("resultado_empresa.txt","w",encoding="utf-8") as f:
+    f.write(str(result))
+print("\nArquivo resultado_empresa.txt salvo!")
