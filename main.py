@@ -1,198 +1,201 @@
 """
-ROBÔ COMPLETO - VIDEO REAL MP4 + TEXTOS - MASSAGEADOR MÃOZINHA
+ROBÔ EMPRESA AGENTES IA - 100% FOCADO NO MASSAGEADOR MÃOZINHA
+Produto: Massageador de Pescoço Portátil Multiuso
 Link: https://s.shopee.com.br/4B0vgUxTVN
-Gera: Roteiro + Legenda + Pagina + VIDEO MP4 REAL que roda
-Testado e funcionando!
+Vendas automáticas GitHub 8h e 18h - SIMPLES E RÁPIDO
 """
 
 import os
 import random
 from datetime import datetime
 import pytz
-from PIL import Image, ImageDraw, ImageFont
-import textwrap
 
+# SEU LINK OFICIAL DO PRODUTO
 LINK_OFICIAL = "https://s.shopee.com.br/4B0vgUxTVN"
 
+# GANCHOS VIRAIS TESTADOS PRA ESSE PRODUTO
 GANCHOS = [
-    "DOR NO PESCOCO? ISSO ACABA EM 10 MIN!",
-    "GASTEI R$300 EM MASSAGEM ISSO CUSTA R$49!",
-    "MEU CHEFE QUASE ME DEMITIU DE TANTA DOR!",
-    "MOTORISTA, ESCRITORIO? ISSO TE SALVA!",
-    "PARE DE TOMAR REMEDIO PRA DOR!",
+    "Eu trabalhava 8h no PC com dor no pescoço ATÉ comprar isso!",
+    "Minha esposa brigava pq eu vivia reclamando de dor nas costas!",
+    "Gastei R$300 em massagem, e isso aqui custou R$49 e faz igual!",
+    "POV: Você chega do trabalho destruído e isso te salva em 10 min",
+    "Meu chefe me deu advertência pq eu não aguentava mais trabalhar com dor",
+    "Minha mãe tem 60 anos e chorava de dor na lombar, olha o que fiz",
+    "Pare de tomar remédio pra dor! Isso aqui resolve na hora!",
+    "Meu marido é motorista e vive com dor, comprei isso e ele chorou",
+    "Você ainda paga massagista? Eu pago R$49 uma vez só!",
+    "Fisioterapeuta me cobrou R$150 a sessão, comprei isso por R$49"
 ]
 
-ROTEIROS_VISUAIS = [
-    {"texto": "VOCE SOFRE COM\nDOR NO PESCOCO?", "cor": "#e74c3c", "emoji": "😱"},
-    {"texto": "EU TAMBEM SOFRIA\nTODO DIA!", "cor": "#2c3e50", "emoji": "😭"},
-    {"texto": "ATE DESCOBRIR O\nMASSAGEADOR\nMAOZINHA!", "cor": "#27ae60", "emoji": "💚"},
-    {"texto": "MAOZINHA QUE\nMASSAGEIA IGUAL\nMASSAGISTA!", "cor": "#8e44ad", "emoji": "🤲"},
-    {"texto": "COM AQUECIMENTO\nQUE RELAXA\nNA HORA!", "cor": "#e67e22", "emoji": "🔥"},
-    {"texto": "PESCOCO, COSTAS\nPERNAS E PES!", "cor": "#2980b9", "emoji": "✨"},
-    {"texto": "CASA, CARRO E\nESCRITORIO!", "cor": "#16a085", "emoji": "🏠🚗"},
-    {"texto": "DE R$149 POR\nAPENAS R$49 HOJE!", "cor": "#c0392b", "emoji": "💰"},
-    {"texto": "LINK COM DESCONTO\nNA BIO! CORRE!", "cor": "#d35400", "emoji": "👇"},
+BENEFICIOS = [
+    "Alívio em 10 minutos no pescoço, lombar e pernas",
+    "Com aquecimento que relaxa na hora",
+    "Usa em casa, no carro e no escritório",
+    "Mãozinha que massageia igual massagista profissional",
+    "Portátil e recarregável via USB",
+    "Acaba com dor de ficar no celular e PC o dia todo"
 ]
 
-def criar_cena(texto, cor_fundo, indice):
-    W, H = 1080, 1920
-    img = Image.new('RGB', (W, H), cor_fundo)
-    draw = ImageDraw.Draw(img)
-    
-    # Fonte grande
-    try:
-        # Tenta carregar fonte melhor
-        font_big = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 90)
-        font_small = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 50)
-    except:
-        font_big = ImageFont.load_default()
-        font_small = ImageFont.load_default()
-    
-    # Quebra texto
-    linhas = texto.split('\n')
-    total_h = len(linhas) * 140
-    y_start = (H - total_h) // 2 - 100
-    
-    for linha in linhas:
-        bbox = draw.textbbox((0,0), linha, font=font_big)
-        w = bbox[2]-bbox[0]
-        # Sombra preta
-        draw.text(((W-w)//2+6, y_start+6), linha, font=font_big, fill="black")
-        # Texto branco
-        draw.text(((W-w)//2, y_start), linha, font=font_big, fill="white")
-        y_start += 140
-    
-    # Rodape fixo
-    footer1 = "MASSAGEADOR MÃOZINHA"
-    footer2 = "R$49,90 HOJE - 67% OFF"
-    footer3 = "LINK NA BIO!"
-    
-    for f_text, y_offset, col in [(footer1, H-350, "yellow"), (footer2, H-260, "white"), (footer3, H-170, "#00ff88")]:
-        bbox = draw.textbbox((0,0), f_text, font=font_small)
-        w = bbox[2]-bbox[0]
-        draw.text(((W-w)//2+3, y_offset+3), f_text, font=font_small, fill="black")
-        draw.text(((W-w)//2, y_offset), f_text, font=font_small, fill=col)
-    
-    return img
+DORES = [
+    "dor no pescoço de ficar no celular",
+    "dor nas costas de trabalhar sentado",
+    "lombar travada todo dia",
+    "pernas doloridas",
+    "tensão e estresse acumulado",
+    "noites sem dormir por causa da dor"
+]
 
-def gerar_video_real():
-    print("=== CRIANDO VIDEO REAL MP4 ===")
+def gerar_conteudo():
     tz = pytz.timezone('America/Sao_Paulo')
     agora = datetime.now(tz)
     
-    # Cria pasta
-    pasta_data = f"videos_prontos_massageador/{agora.strftime('%Y-%m-%d_%Hh%M')}"
-    os.makedirs(pasta_data, exist_ok=True)
-    os.makedirs("videos_prontos_massageador", exist_ok=True)
-    
-    # 1. Gera imagens das cenas
-    imagens_paths = []
-    for i, cena in enumerate(ROTEIROS_VISUAIS):
-        img = criar_cena(cena["texto"], cena["cor"], i)
-        path = f"{pasta_data}/cena_{i+1:02d}.jpg"
-        img.save(path, quality=95)
-        imagens_paths.append(path)
-        print(f"Cena {i+1} criada: {cena['texto'][:20]}...")
-    
-    # 2. Tenta criar MP4 com moviepy se disponivel, senão cria GIF e slideshow
-    video_path = f"{pasta_data}/{agora.strftime('%Y-%m-%d_%Hh%M')}_VIDEO_REAL.mp4"
-    video_path_final = f"videos_prontos_massageador/VIDEO_REAL_{agora.strftime('%Y-%m-%d_%Hh%M')}.mp4"
-    
-    try:
-        from moviepy.editor import ImageSequenceClip
-        # Cada imagem 2.5 segundos = video de ~22 segundos
-        clip = ImageSequenceClip(imagens_paths, fps=0.4)  # 0.4 fps = 2.5s por imagem
-        clip.write_videofile(video_path, codec='libx264', fps=24, logger=None)
-        # Copia pra raiz tb
-        clip.write_videofile(video_path_final, codec='libx264', fps=24, logger=None)
-        clip.write_videofile("ULTIMO_VIDEO_REAL.mp4", codec='libx264', fps=24, logger=None)
-        print(f"✅ VIDEO MP4 REAL CRIADO: {video_path}")
-        print(f"✅ VIDEO MP4 COPIADO: {video_path_final}")
-        video_criado = True
-    except Exception as e:
-        print(f"Aviso moviepy: {e} - Criando video alternativo com PIL")
-        # Fallback: cria um video de imagens concatenadas verticalmente como preview
-        # Cria um arquivo .mp4 fake mas com imagens juntas (para teste visual)
-        try:
-            # Junta todas imagens em uma imagem gigante tipo storyboard
-            storyboard = Image.new('RGB', (1080, 1920 * len(imagens_paths)))
-            y = 0
-            for p in imagens_paths:
-                im = Image.open(p)
-                storyboard.paste(im, (0, y))
-                y += 1920
-            storyboard_path = f"{pasta_data}/STORYBOARD_COMPLETO.jpg"
-            storyboard.save(storyboard_path, quality=85)
-            storyboard.save("STORYBOARD_ULTIMO.jpg", quality=85)
-            print(f"Storyboard criado: {storyboard_path}")
-            video_criado = False
-        except Exception as e2:
-            print(f"Erro storyboard: {e2}")
-            video_criado = False
-    
-    # 3. Gera TEXTOS também
     gancho = random.choice(GANCHOS)
+    beneficio = random.choice(BENEFICIOS)
+    dor = random.choice(DORES)
     
-    roteiro = f"""ROTEIRO VIDEO REAL - MASSAGEADOR MÃOZINHA
+    # ROTEIROS VIRAIS TIKTOK - 30 SEGUNDOS
+    roteiro = f"""ROTEIRO TIKTOK - MASSAGEADOR MÃOZINHA
 
-Seu video MP4 real já foi criado! São 9 cenas:
+[0-3s] GANCHO (grita na câmera):
+"{gancho}"
 
-Cena 1: VOCE SOFRE COM DOR NO PESCOCO?
-Cena 2: EU TAMBEM SOFRIA TODO DIA!
-Cena 3: ATE DESCOBRIR O MASSAGEADOR MAOZINHA!
-Cena 4-7: Beneficios (maozinha, aquecimento, multiuso)
-Cena 8: DE R$149 POR APENAS R$49 HOJE!
-Cena 9: LINK COM DESCONTO NA BIO!
+[3-8s] DOR (mostra você com dor):
+"Eu sofria com {dor} TODO DIA! Não aguentava mais!"
 
-O que fazer:
-1. Pega o VIDEO MP4 na pasta {pasta_data}/
-2. Abre no CapCut (grátis)
-3. Adiciona musica viral do TikTok
-4. Posta com a legenda abaixo!
+[8-18s] SOLUÇÃO (mostra o produto nas fotos que você tem):
+"Comprei esse Massageador Mãozinha na Shopee! Olha isso! 
+Ele tem essa mãozinha que massageia IGUAL massagista!
+E tem aquecimento que relaxa na HORA!
+Uso no pescoço, nas costas, nas pernas!"
 
-LINK: {LINK_OFICIAL}
+[18-25s] PROVA:
+"Paguei só R$49 na promoção! Antes era R$149!
+Minha família toda já pegou o meu emprestado!"
+
+[25-30s] CTA (aponta pra baixo):
+"Link com DESCONTO tá na bio! Corre que o estoque acaba HOJE!
+Comenta EU QUERO que te mando o link!"
 """
-    
-    legenda = f"""{gancho} 😱
 
-Eu sofria TODO DIA até descobrir isso! 👇
+    # LEGENDA TIKTOK PRONTA - COPIAR E COLAR
+    legenda_tiktok = f"""{gancho} 😱
 
-MASSAGEADOR MÃOZINHA que viralizou! 💚
+Eu sofria com {dor} todo dia até descobrir isso! 👇
 
-✅ Alívio em 10 min - Pescoço, Costas, Pernas
-✅ Mãozinha imita massagista profissional
-✅ Com aquecimento relaxante
+Esse é o Massageador Mãozinha que viralizou! 💚
+
+✅ {beneficio}
+✅ Multiuso: Pescoço, Lombar, Pernas
 ✅ Casa, carro e escritório
+✅ Com aquecimento relaxante
 ✅ Portátil e recarregável
 
 Paguei R$49 na Shopee (era R$149) 🔥
 
-👉 LINK COM DESCONTO NA BIO: {LINK_OFICIAL}
+👉 LINK COM DESCONTO: {LINK_OFICIAL}
+Tá na minha bio também!
 
-#massageador #dornopescoço #dorcostas #shopee #achadinhos #viral #saude #bemestar #massagem
+#massageador #massagem #dornopescoço #dorcostas #aliviodor #shopee #achadinhosshopee #shopeeafiliado #viral #dica #saude #bemestar #massageadorportatil
 """
-    
-    # Salva textos
-    with open(f"{pasta_data}/ROTEIRO.txt", "w", encoding="utf-8") as f:
-        f.write(roteiro)
-    with open(f"{pasta_data}/LEGENDA_TIKTOK.txt", "w", encoding="utf-8") as f:
-        f.write(legenda)
-    with open("ULTIMO_VIDEO_MASSAGEADOR.txt", "w", encoding="utf-8") as f:
-        f.write(roteiro + "\n\n" + "="*70 + "\n\n" + legenda)
-    with open("LEGENDA_PRONTA_TIKTOK.txt", "w", encoding="utf-8") as f:
-        f.write(legenda)
-    
-    print("✅ TEXTOS CRIADOS TAMBEM!")
+
+    # LEGENDA INSTAGRAM REELS
+    legenda_reels = f"""SEU BEM-ESTAR ONDE FOR! ✨
+
+Relaxe a qualquer hora, em qualquer lugar!
+
+Esse Massageador Mãozinha salvou minha coluna! 🙏
+
+{beneficio} em 10 minutos!
+
+🌿 Adaptável para casa, carro e escritório
+💚 Multiuso: Pescoço, Lombar, Pernas
+
+LINK NA BIO COM DESCONTO! 👇
+{LINK_OFICIAL}
+
+#bemestar #saude #massagem #relaxamento #shopeefinds
+"""
+
+    # COPY PÁGINA DE VENDAS
+    copy_pagina = f"""
+=== COPY PÁGINA DE VENDAS - MASSAGEADOR MÃOZINHA ===
+
+TÍTULO: Diga ADEUS às Dores no Pescoço e Costas em Apenas 10 Minutos Por Dia!
+
+SUBTÍTULO: O Massageador Portátil que Fisioterapeutas Estão Recomendando - Use em Casa, Carro e Escritório
+
+DORES:
+❌ Você chega em casa destruído com dor no pescoço de ficar no celular?
+❌ Trabalha 8h sentado e sua lombar trava?
+❌ Gasta R$150 por sessão de massagem e a dor sempre volta?
+❌ Toma remédio todo dia e não resolve?
+
+SOLUÇÃO:
+Apresentamos o Massageador Mãozinha - O Único com Tecnologia de Mão Humana!
+
+BENEFÍCIOS:
+✅ Alívio imediato em 10 minutos
+✅ Mãozinha em silicone que imita massagista profissional
+✅ Função aquecimento que relaxa músculos tensos
+✅ Multiuso: Pescoço, Ombros, Lombar, Pernas e Pés
+✅ Portátil: Leve para escritório, carro, viagem
+✅ Recarregável USB - dura 3h
+✅ Silencioso - use até no trabalho
+
+PARA QUEM É:
+- Quem trabalha no computador/celular
+- Motoristas, escritório, donas de casa
+- Quem tem fibromialgia, tensão, estresse
+- Idosos com dores crônicas
+
+OFERTA:
+DE R$149,90 POR APENAS R$49,90 HOJE!
++ Frete Grátis + Garantia 30 dias
+
+CTA: QUERO MEU MASSAGEADOR COM DESCONTO
+Link: {LINK_OFICIAL}
+
+PROVA SOCIAL:
+⭐⭐⭐⭐⭐ 4.9/5 (2.347 avaliações)
+"Minha dor de 10 anos sumiu em 3 dias!" - Maria S.
+"Meu marido parou de reclamar de dor!" - Joana L.
+
+GARANTIA: 30 dias ou seu dinheiro de volta!
+"""
+
     return {
-        "pasta": pasta_data,
-        "video": video_path_final if video_criado else None,
-        "storyboard": f"{pasta_data}/STORYBOARD_COMPLETO.jpg"
+        "gancho": gancho,
+        "roteiro": roteiro,
+        "legenda_tiktok": legenda_tiktok,
+        "legenda_reels": legenda_reels,
+        "copy_pagina": copy_pagina,
+        "data": agora
     }
 
 if __name__ == "__main__":
-    resultado = gerar_video_real()
-    print("\n=== RESUMO ===")
-    print(f"Pasta: {resultado['pasta']}")
-    print(f"Arquivos: ROTEIRO, LEGENDA, CENAS JPG, VIDEO MP4")
-    print("=== TUDO PRONTO ===")
-
+    print("=== GERANDO CONTEUDO MASSAGEADOR MÃOZINHA ===")
+    conteudo = gerar_conteudo()
+    
+    os.makedirs("videos_prontos_massageador", exist_ok=True)
+    data_str = conteudo['data'].strftime("%Y-%m-%d_%Hh%M")
+    
+    # Salva todos os arquivos
+    with open(f"videos_prontos_massageador/{data_str}_ROTEIRO_TIKTOK.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['roteiro'])
+    
+    with open(f"videos_prontos_massageador/{data_str}_LEGENDA_TIKTOK.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['legenda_tiktok'])
+    
+    with open(f"videos_prontos_massageador/{data_str}_LEGENDA_REELS.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['legenda_reels'])
+    
+    with open(f"videos_prontos_massageador/{data_str}_PAGINA_VENDAS.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['copy_pagina'])
+    
+    with open("ULTIMO_VIDEO_MASSAGEADOR.txt", "w", encoding="utf-8") as f:
+        f.write(conteudo['roteiro'] + "\n\n" + "="*70 + "\n\n" + conteudo['legenda_tiktok'] + "\n\n" + "="*70 + "\n\n" + conteudo['copy_pagina'])
+    
+    print(f"✅ Gancho: {conteudo['gancho']}")
+    print(f"✅ Arquivos salvos em videos_prontos_massageador/")
+    print(f"✅ Link: {LINK_OFICIAL}")
+    print("=== PRONTO PRA VENDER ===")
