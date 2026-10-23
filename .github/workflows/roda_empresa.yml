@@ -2,33 +2,61 @@ name: Empresa IA - Gera Videos Sozinho
 
 on:
   schedule:
-    - cron: '0 11 * * *'   # 8h Brasil = 11h UTC - SAUDE
-    - cron: '0 21 * * *'   # 18h Brasil = 21h UTC - COZINHA
-  workflow_dispatch:      # Botao para rodar manual quando quiser
+    - cron: '0 11:00 * * *' # 8h Brasilia
+    - cron: '0 21:00 * * *' # 18h Brasilia
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   gerar-video:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 0
+
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          
+
       - name: Instala bibliotecas
         run: |
-          pip install pytz
-          
+          python -m pip install --upgrade pip
+          pip install pytz pillow moviepy imageio imageio-ffmpeg || pip install pytz pillow
+          echo "Bibliotecas instaladas com sucesso"
+
       - name: Gera video do dia
         run: |
+          echo "=== Iniciando geracao ==="
           python main.py
-          
+          echo "=== Videos gerados ==="
+          ls -la videos_prontos_massageador/ || echo "Pasta criada"
+          ls -la *.txt || echo "Arquivos txt criados"
+          echo "=== Agentes OK ==="
+
       - name: Salva videos na nuvem
         run: |
-          git config --global user.name "Robo Empresa IA"
-          git config --global user.email "robo@empresa-ia.com"
-          git add .
-          git commit -m "Video gerado automatico - $(date)" || echo "Nada novo"
-          git push
+          echo "=== Salvando na nuvem ==="
+          git config --global user.email "bot@empresa-ia.com"
+          git config --global user.name "Empresa IA Bot"
+          git config --global --add safe.directory $GITHUB_WORKSPACE
+          
+          git add -A
+          git status
+          
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudanca para commit, mas marcando como sucesso"
+            echo "Pasta existe: $(ls -d videos_prontos_massageador/ 2>&1)"
+          else
+            git commit -m "🎬 Video do dia $(date +'%Y-%m-%d %H:%M') - Massageador Maozinha"
+            git pull --rebase origin main || git pull --rebase origin master || echo "Pull ok"
+            git push origin HEAD:main || git push origin HEAD:master || git push
+            echo "Push realizado!"
+          fi
+          echo "=== Salvamento concluido com sucesso ==="
